@@ -6,6 +6,8 @@ import {
 } from "./pajak.js";
 import { siapkanRekap, buatXlsx, buatPdf } from "./ekspor.js";
 import logoKemenkeu from "./assets/logo-kemenkeu.png";
+import logoSitandan from "./assets/logo-sitandan.webp";
+import ikonSitandan from "./assets/ikon-sitandan.webp";
 
 // Kunci penyimpanan.
 const KEY_RECORDS = "sitandan_v2_records";
@@ -431,6 +433,11 @@ export default function Sitandan() {
       <main className="st-main">
         {/* ================= BERANDA ================= */}
         {tab === "home" && (
+          <>
+          <div className="st-hero">
+            <img src={logoSitandan} width="1100" height="649" decoding="async"
+              alt="SITANDAN, Penjualan TBS Tercatat, Menghitung Pajaknya Mudah. Kantor Wilayah DJP Riau" />
+          </div>
           <div className="st-dua-kolom st-dua-kolom--home">
             <div className="st-kolom">
               <section className="st-nota" aria-label={`Ringkasan tahun ${tahun}`}>
@@ -537,6 +544,7 @@ export default function Sitandan() {
               </section>
             </div>
           </div>
+          </>
         )}
 
         {/* ================= CATAT ================= */}
@@ -967,39 +975,10 @@ function IconFile({ warna, teks }) {
   );
 }
 
-/**
- * Logo SITANDAN: pohon kelapa sawit dengan pelepah berbulu, pelepah tua menjuntai,
- * batang berpangkal pelepah, dan tandan buah matang di ketiak pelepah.
- */
+/** Ikon SITANDAN: tandan buah sawit dari logo resmi SITANDAN (sr./assets/ikon-sitandan.webp). */
 function LogoSitandan({ besar }) {
   const s = besar ? 72 : 48;
-  return (
-    <svg width={s} height={s} viewBox="0 0 64 64" role="img" aria-label="Logo SITANDAN, pohon kelapa sawit berbuah" className="st-logo">
-      <rect x="0" y="0" width="64" height="64" rx="15" fill="#fff8ea" />
-      <ellipse cx="32" cy="59.5" rx="17" ry="2.6" fill="#d6e6cb" />
-      {/* batang dengan pangkal pelepah (ciri khas sawit) */}
-      <path d="M28.6 30c-.5 9.5-1.2 19-2.1 29h10.8c-.8-10-1.4-19.5-1.9-29z" fill="#7a4e2a" />
-      <path d="M27.8 36l2.4 2.6 1.8-2.6 1.8 2.6 2.4-2.6M27.4 43l2.6 2.7 2-2.7 2 2.7 2.6-2.7M27 50l2.8 2.8 2.2-2.8 2.2 2.8 2.8-2.8" fill="none" stroke="#4e2c12" strokeWidth="1.2" strokeLinejoin="round" />
-      {/* pelepah tua menjuntai */}
-      <g fill="none" strokeLinecap="round">
-        <path d="M25.9 27.4L22.8 24.2M25.9 27.4L24.2 31.7M24.0 27.8L20.7 25.1M24.0 27.8L22.7 32.2M22.2 28.4L18.8 26.2M22.2 28.4L21.3 32.8M20.4 29.2L16.9 27.4M20.4 29.2L19.9 33.5M18.7 30.1L15.2 28.8M18.7 30.1L18.5 34.3M17.0 31.2L13.6 30.3M17.0 31.2L17.2 35.3M15.4 32.5L12.0 32.0M15.4 32.5L15.9 36.4M13.9 34.0L10.6 33.8M13.9 34.0L14.6 37.7M12.4 35.6L9.3 35.7M12.4 35.6L13.3 39.1M11.0 37.3L8.0 37.7M11.0 37.3L12.0 40.7M9.7 39.2L6.9 39.9M9.7 39.2L10.8 42.4M8.4 41.3L5.8 42.2M8.4 41.3L9.6 44.4M7.2 43.6L4.7 44.6M7.2 43.6L8.4 46.5M38.1 27.4L39.8 31.7M38.1 27.4L41.2 24.2M40.0 27.8L41.3 32.2M40.0 27.8L43.3 25.1M41.8 28.4L42.7 32.8M41.8 28.4L45.2 26.2M43.6 29.2L44.1 33.5M43.6 29.2L47.1 27.4M45.3 30.1L45.5 34.3M45.3 30.1L48.8 28.8M47.0 31.2L46.8 35.3M47.0 31.2L50.4 30.3M48.6 32.5L48.1 36.4M48.6 32.5L52.0 32.0M50.1 34.0L49.4 37.7M50.1 34.0L53.4 33.8M51.6 35.6L50.7 39.1M51.6 35.6L54.7 35.7M53.0 37.3L52.0 40.7M53.0 37.3L56.0 37.7M54.3 39.2L53.2 42.4M54.3 39.2L57.1 39.9M55.6 41.3L54.4 44.4M55.6 41.3L58.2 42.2M56.8 43.6L55.6 46.5M56.8 43.6L59.3 44.6" stroke="#5c8a3a" strokeWidth="1.1" />
-        <path d="M32.0 27.0L29.9 27.0L27.9 27.1L25.9 27.4L24.0 27.8L22.2 28.4L20.4 29.2L18.7 30.1L17.0 31.2L15.4 32.5L13.9 34.0L12.4 35.6L11.0 37.3L9.7 39.2L8.4 41.3L7.2 43.6L6.0 46.0M32.0 27.0L34.1 27.0L36.1 27.1L38.1 27.4L40.0 27.8L41.8 28.4L43.6 29.2L45.3 30.1L47.0 31.2L48.6 32.5L50.1 34.0L51.6 35.6L53.0 37.3L54.3 39.2L55.6 41.3L56.8 43.6L58.0 46.0" stroke="#4f7a30" strokeWidth="1.5" />
-      </g>
-      {/* pelepah muda berbulu */}
-      <g fill="none" strokeLinecap="round">
-        <path d="M25.2 22.7L24.6 17.9M25.2 22.7L20.9 25.4M23.0 21.8L22.1 17.2M23.0 21.8L19.1 24.7M20.9 21.0L19.7 16.8M20.9 21.0L17.3 24.2M18.9 20.4L17.3 16.6M18.9 20.4L15.7 23.8M16.9 20.1L15.0 16.7M16.9 20.1L14.2 23.7M15.0 20.0L12.8 17.0M15.0 20.0L12.8 23.8M13.2 20.1L10.7 17.6M13.2 20.1L11.5 24.0M11.4 20.4L8.7 18.4M11.4 20.4L10.2 24.4M9.7 21.0L6.8 19.5M9.7 21.0L9.0 24.9M8.0 21.8L5.1 20.8M8.0 21.8L7.7 25.6M6.4 22.7L3.6 22.2M6.4 22.7L6.5 26.5M4.9 23.9L2.1 23.8M4.9 23.9L5.3 27.5M3.4 25.4L0.8 25.6M3.4 25.4L4.1 28.7M38.8 22.7L43.1 25.4M38.8 22.7L39.4 17.9M41.0 21.8L44.9 24.7M41.0 21.8L41.9 17.2M43.1 21.0L46.7 24.2M43.1 21.0L44.3 16.8M45.1 20.4L48.3 23.8M45.1 20.4L46.7 16.6M47.1 20.1L49.8 23.7M47.1 20.1L49.0 16.7M49.0 20.0L51.2 23.8M49.0 20.0L51.2 17.0M50.8 20.1L52.5 24.0M50.8 20.1L53.3 17.6M52.6 20.4L53.8 24.4M52.6 20.4L55.3 18.4M54.3 21.0L55.0 24.9M54.3 21.0L57.2 19.5M56.0 21.8L56.3 25.6M56.0 21.8L58.9 20.8M57.6 22.7L57.5 26.5M57.6 22.7L60.4 22.2M59.1 23.9L58.7 27.5M59.1 23.9L61.9 23.8M60.6 25.4L59.9 28.7M60.6 25.4L63.2 25.6M26.6 20.6L27.6 16.4M26.6 20.6L22.1 21.6M24.8 18.9L25.7 14.8M24.8 18.9L20.6 20.0M23.1 17.3L23.8 13.4M23.1 17.3L19.1 18.6M21.5 15.8L21.9 12.2M21.5 15.8L17.6 17.4M19.8 14.6L20.1 11.1M19.8 14.6L16.2 16.3M18.2 13.5L18.2 10.2M18.2 13.5L14.9 15.4M16.7 12.6L16.4 9.6M16.7 12.6L13.6 14.7M15.2 11.8L14.7 9.1M15.2 11.8L12.4 14.2M13.7 11.3L13.0 8.8M13.7 11.3L11.3 13.8M12.3 10.9L11.3 8.7M12.3 10.9L10.2 13.6M10.9 10.6L9.7 8.8M10.9 10.6L9.2 13.5M9.6 10.6L8.1 9.1M9.6 10.6L8.2 13.5M8.3 10.7L6.6 9.6M8.3 10.7L7.3 13.7M37.4 20.6L41.9 21.6M37.4 20.6L36.4 16.4M39.2 18.9L43.4 20.0M39.2 18.9L38.3 14.8M40.9 17.3L44.9 18.6M40.9 17.3L40.2 13.4M42.5 15.8L46.4 17.4M42.5 15.8L42.1 12.2M44.2 14.6L47.8 16.3M44.2 14.6L43.9 11.1M45.8 13.5L49.1 15.4M45.8 13.5L45.8 10.2M47.3 12.6L50.4 14.7M47.3 12.6L47.6 9.6M48.8 11.8L51.6 14.2M48.8 11.8L49.3 9.1M50.3 11.3L52.7 13.8M50.3 11.3L51.0 8.8M51.7 10.9L53.8 13.6M51.7 10.9L52.7 8.7M53.1 10.6L54.8 13.5M53.1 10.6L54.3 8.8M54.4 10.6L55.8 13.5M54.4 10.6L55.9 9.1M55.7 10.7L56.7 13.7M55.7 10.7L57.4 9.6M29.5 20.9L31.7 18.0M29.5 20.9L25.8 20.4M28.8 19.1L30.9 16.3M28.8 19.1L25.1 18.6M28.0 17.3L30.0 14.6M28.0 17.3L24.6 16.8M27.3 15.5L29.3 13.1M27.3 15.5L24.0 15.2M26.6 13.8L28.5 11.6M26.6 13.8L23.5 13.6M26.0 12.2L27.8 10.1M26.0 12.2L23.0 12.1M25.4 10.7L27.1 8.8M25.4 10.7L22.5 10.6M24.8 9.3L26.4 7.5M24.8 9.3L22.1 9.2M24.3 7.9L25.8 6.3M24.3 7.9L21.7 7.9M23.8 6.6L25.2 5.1M23.8 6.6L21.3 6.7M23.3 5.3L24.6 4.1M23.3 5.3L21.0 5.5M22.8 4.1L24.1 3.1M22.8 4.1L20.7 4.4M22.4 3.0L23.6 2.1M22.4 3.0L20.4 3.4M34.5 20.9L38.2 20.4M34.5 20.9L32.3 18.0M35.2 19.1L38.9 18.6M35.2 19.1L33.1 16.3M36.0 17.3L39.4 16.8M36.0 17.3L34.0 14.6M36.7 15.5L40.0 15.2M36.7 15.5L34.7 13.1M37.4 13.8L40.5 13.6M37.4 13.8L35.5 11.6M38.0 12.2L41.0 12.1M38.0 12.2L36.2 10.1M38.6 10.7L41.5 10.6M38.6 10.7L36.9 8.8M39.2 9.3L41.9 9.2M39.2 9.3L37.6 7.5M39.7 7.9L42.3 7.9M39.7 7.9L38.2 6.3M40.2 6.6L42.7 6.7M40.2 6.6L38.8 5.1M40.7 5.3L43.0 5.5M40.7 5.3L39.4 4.1M41.2 4.1L43.3 4.4M41.2 4.1L39.9 3.1M41.6 3.0L43.6 3.4M41.6 3.0L40.4 2.1" stroke="#2f8a43" strokeWidth="1.15" />
-        <path d="M32.0 27.0L29.7 25.4L27.4 23.9L25.2 22.7L23.0 21.8L20.9 21.0L18.9 20.4L16.9 20.1L15.0 20.0L13.2 20.1L11.4 20.4L9.7 21.0L8.0 21.8L6.4 22.7L4.9 23.9L3.4 25.4L2.0 27.0M32.0 27.0L34.3 25.4L36.6 23.9L38.8 22.7L41.0 21.8L43.1 21.0L45.1 20.4L47.1 20.1L49.0 20.0L50.8 20.1L52.6 20.4L54.3 21.0L56.0 21.8L57.6 22.7L59.1 23.9L60.6 25.4L62.0 27.0M32.0 27.0L30.1 24.7L28.3 22.6L26.6 20.6L24.8 18.9L23.1 17.3L21.5 15.8L19.8 14.6L18.2 13.5L16.7 12.6L15.2 11.8L13.7 11.3L12.3 10.9L10.9 10.6L9.6 10.6L8.3 10.7L7.0 11.0M32.0 27.0L33.9 24.7L35.7 22.6L37.4 20.6L39.2 18.9L40.9 17.3L42.5 15.8L44.2 14.6L45.8 13.5L47.3 12.6L48.8 11.8L50.3 11.3L51.7 10.9L53.1 10.6L54.4 10.6L55.7 10.7L57.0 11.0M32.0 27.0L31.1 24.9L30.3 22.9L29.5 20.9L28.8 19.1L28.0 17.3L27.3 15.5L26.6 13.8L26.0 12.2L25.4 10.7L24.8 9.3L24.3 7.9L23.8 6.6L23.3 5.3L22.8 4.1L22.4 3.0L22.0 2.0M32.0 27.0L32.9 24.9L33.7 22.9L34.5 20.9L35.2 19.1L36.0 17.3L36.7 15.5L37.4 13.8L38.0 12.2L38.6 10.7L39.2 9.3L39.7 7.9L40.2 6.6L40.7 5.3L41.2 4.1L41.6 3.0L42.0 2.0" stroke="#1d5e2e" strokeWidth="1.6" />
-      </g>
-      {/* tandan buah segar */}
-      <ellipse cx="32" cy="33" rx="8.6" ry="7.6" fill="#3a0f08" />
-      <g>
-        <circle cx="27.6" cy="30.6" r="2.6" fill="#6e1a0c" /><circle cx="32" cy="29.4" r="2.7" fill="#7f200e" /><circle cx="36.4" cy="30.6" r="2.6" fill="#6e1a0c" />
-        <circle cx="26.4" cy="34.6" r="2.5" fill="#a62f10" /><circle cx="30.4" cy="33.6" r="2.8" fill="#c4410f" /><circle cx="34.6" cy="33.6" r="2.8" fill="#d0501a" /><circle cx="37.8" cy="34.8" r="2.4" fill="#a62f10" />
-        <circle cx="28.8" cy="37.8" r="2.6" fill="#e0661b" /><circle cx="33.2" cy="38" r="2.7" fill="#ee7a1e" />
-        <g fill="#ffd9b0" opacity=".9"><circle cx="31.3" cy="28.6" r=".8" /><circle cx="29.7" cy="32.8" r=".8" /><circle cx="33.9" cy="32.8" r=".8" /><circle cx="32.5" cy="37.1" r=".8" /><circle cx="28.1" cy="37" r=".7" /></g>
-      </g>
-    </svg>
-  );
+  return <img src={ikonSitandan} width={s} height={s} alt="" aria-hidden="true" className="st-logo" />;
 }
 
 // =====================================================================
@@ -1041,7 +1020,9 @@ const CSS = `
 .st-head{background:var(--daun);color:#fff}
 .st-head__in{max-width:var(--lebar);margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .st-brand{display:flex;align-items:center;gap:10px;min-width:0}
-.st-logo{flex:none;display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,.18))}
+.st-logo{flex:none;display:block;border-radius:50%;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
+.st-hero{margin:-6px -8px 10px;text-align:center}
+.st-hero img{display:block;width:100%;max-width:520px;height:auto;margin:0 auto}
 .st-brand__teks{min-width:0}
 .st-brand__nama{font-weight:800;font-size:22px;letter-spacing:.06em;line-height:1.05}
 .st-brand__sub{font-size:11.5px;color:#d3e7c9;line-height:1.3;margin-top:3px}
@@ -1277,6 +1258,8 @@ const CSS = `
   .st-nav__titik{top:12px;left:auto;right:8px;border-color:var(--daun)}
 
   .st-main{padding:28px 24px 16px}
+  .st-hero{margin:-10px 0 18px}
+  .st-hero img{max-width:500px}
   .st-h1{font-size:26px}
   .st-dua-kolom{display:grid;gap:28px;align-items:start}
   .st-dua-kolom--home{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
