@@ -7,13 +7,30 @@ import {
 import { siapkanRekap, buatXlsx, buatPdf } from "./ekspor.js";
 import logoKemenkeu from "./assets/logo-kemenkeu.png";
 
-// Logo DJP diletakkan di folder public/ dengan nama logo-djp.png.
-// Bila file belum ada, logo otomatis disembunyikan (tidak membuat build gagal).
-const LOGO_DJP = "/logo-djp.png";
-
-// Kunci penyimpanan. KEY_RECORDS sama dengan versi lama → data pengguna lama tetap terbaca.
+// Kunci penyimpanan.
 const KEY_RECORDS = "sitandan_v2_records";
 const KEY_SETOR = "sitandan_v2_setor";
+// Versi SITANDAN yang tayang sebelumnya menyimpan data di kunci ini.
+// Data lama dipindahkan sekali saja ke KEY_RECORDS (data lama tidak dihapus).
+const KEY_LAMA = "sitandan_records";
+const KEY_MIGRASI = "sitandan_migrasi_v1";
+
+function muatAwal() {
+  const kini = baca(KEY_RECORDS, []);
+  let gabung = Array.isArray(kini) ? kini : [];
+  try {
+    if (!localStorage.getItem(KEY_MIGRASI)) {
+      const lama = baca(KEY_LAMA, []);
+      if (Array.isArray(lama) && lama.length) {
+        const peta = new Map(gabung.map((r) => [String(r.id), r]));
+        for (const r of lama) if (r && !peta.has(String(r.id))) peta.set(String(r.id), r);
+        gabung = [...peta.values()];
+      }
+      localStorage.setItem(KEY_MIGRASI, new Date().toISOString());
+    }
+  } catch { /* penyimpanan diblokir: pakai yang ada */ }
+  return normalisasi(gabung);
+}
 
 const TANGGAL_MIN = `${ATURAN.tahunAwalAplikasi}-01-01`;
 const WA_URL = `https://wa.me/${BANTUAN.waKanwil}?text=${encodeURIComponent("Halo Helpdesk Kanwil DJP Riau, saya pekebun sawit pengguna SITANDAN ingin bertanya tentang ")}`;
@@ -58,7 +75,7 @@ const MENU = [
 ];
 
 export default function Sitandan() {
-  const [records, setRecords] = useState(() => normalisasi(baca(KEY_RECORDS, [])));
+  const [records, setRecords] = useState(muatAwal);
   const [setorMap, setSetorMap] = useState(() => baca(KEY_SETOR, {}) || {});
   const [form, setForm] = useState(formKosong);
   const [tab, setTab] = useState("home");
@@ -70,7 +87,6 @@ export default function Sitandan() {
   const [bukaLain, setBukaLain] = useState(false);
   const [cobaKirim, setCobaKirim] = useState(false);
   const [semua, setSemua] = useState(false);
-  const [adaLogoDjp, setAdaLogoDjp] = useState(true);
   const toastTimer = useRef(null);
   const fileRef = useRef(null);
   const gagalSimpan = useRef(false);
@@ -100,7 +116,7 @@ export default function Sitandan() {
       gagalSimpan.current = true;
       tampilkan("Data tidak bisa disimpan di perangkat ini. Unduh cadangan lewat menu Pengaturan.", "error");
     }
-  }, [records]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [records]);
   useEffect(() => { simpan(KEY_SETOR, setorMap); }, [setorMap]);
 
   // Sinkron bila aplikasi terbuka di dua tab
@@ -369,13 +385,7 @@ export default function Sitandan() {
       {/* ---------- Strip instansi ---------- */}
       <div className="st-instansi">
         <div className="st-instansi__in">
-          <img src={logoKemenkeu} alt="Kementerian Keuangan" className="st-instansi__logo" />
-          {adaLogoDjp && (
-            <>
-              <span className="st-instansi__garis" aria-hidden="true" />
-              <img src={LOGO_DJP} alt="Direktorat Jenderal Pajak" className="st-instansi__logo" onError={() => setAdaLogoDjp(false)} />
-            </>
-          )}
+          <img src={logoKemenkeu} alt="Kementerian Keuangan | Direktorat Jenderal Pajak" className="st-instansi__logo" />
           <span className="st-instansi__garis" aria-hidden="true" />
           <span className="st-instansi__nama">KANWIL DJP RIAU</span>
         </div>
@@ -1021,10 +1031,10 @@ const CSS = `
 
 /* Strip instansi */
 .st-instansi{background:#fff;border-bottom:1px solid var(--garis);padding-top:env(safe-area-inset-top)}
-.st-instansi__in{max-width:var(--lebar);margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:12px;min-height:48px}
-.st-instansi__logo{height:30px;width:auto;display:block;object-fit:contain}
-.st-instansi__garis{width:1.5px;height:26px;background:#b9c4bb;flex:none}
-.st-instansi__nama{font-weight:800;font-size:14px;letter-spacing:.06em;color:#12305a;line-height:1;white-space:nowrap}
+.st-instansi__in{max-width:var(--lebar);margin:0 auto;padding:6px 16px;display:flex;align-items:center;gap:12px;min-height:52px}
+.st-instansi__logo{height:42px;width:auto;display:block;object-fit:contain}
+.st-instansi__garis{width:1.5px;height:30px;background:#b9c4bb;flex:none}
+.st-instansi__nama{font-weight:800;font-size:15px;letter-spacing:.06em;color:#12305a;line-height:1;white-space:nowrap}
 
 /* Kepala aplikasi */
 .st-lekat{position:sticky;top:0;z-index:20}
@@ -1233,25 +1243,26 @@ const CSS = `
 @media (max-width:380px){
   .st-brand__nama{font-size:19px}
   .st-brand__sub{font-size:9.5px}
-  .st-instansi__nama{font-size:12.5px}
-  .st-instansi__logo{height:26px}
+  .st-instansi__nama{font-size:13.5px}
+  .st-instansi__logo{height:38px}
 }
 
 /* Tablet */
 @media (min-width:600px){
   .st-kontak{grid-template-columns:1fr 1fr}
-  .st-instansi__logo{height:34px}
-  .st-instansi__nama{font-size:16px}
+  .st-instansi__logo{height:50px}
+  .st-instansi__garis{height:34px}
+  .st-instansi__nama{font-size:18px}
   .st-brand__sub span{display:inline}
 }
 
 /* Desktop */
 @media (min-width:900px){
   .st{padding-bottom:24px}
-  .st-instansi__in{min-height:58px}
-  .st-instansi__logo{height:38px}
-  .st-instansi__garis{height:32px}
-  .st-instansi__nama{font-size:17px}
+  .st-instansi__in{min-height:68px}
+  .st-instansi__logo{height:58px}
+  .st-instansi__garis{height:40px}
+  .st-instansi__nama{font-size:21px}
   .st-head__in{padding:12px 24px}
   .st-brand__nama{font-size:26px}
   .st-brand__sub{font-size:13px}
