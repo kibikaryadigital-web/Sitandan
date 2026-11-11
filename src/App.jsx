@@ -430,14 +430,28 @@ export default function Sitandan() {
         </nav>
       </div>
 
+      {tab === "home" && (
+        <section className="st-sambut" aria-label="Selamat datang di SITANDAN">
+          <div className="st-sambut__in">
+            <img className="st-sambut__logo" src={logoSitandan} width="1100" height="649" decoding="async"
+              alt="SITANDAN, Penjualan TBS Tercatat, Menghitung Pajaknya Mudah. Kantor Wilayah DJP Riau" />
+            <div className="st-sambut__teks">
+              <h1 className="st-sambut__judul">Jual buah hari ini, catat di sini.</h1>
+              <p className="st-sambut__isi">
+                Isi berat dan harga dari nota toke. SITANDAN menjumlahkan omzet, menghitung PPh final 0,5%, dan mengingatkan kapan harus setor.
+              </p>
+              <button type="button" className="st-cta st-cta--sambut" onClick={() => { if (editId === null) setForm(formKosong()); pindahTab("catat"); }}>
+                <IconPlus /> Catat penjualan TBS
+              </button>
+            </div>
+          </div>
+        </section>
+      )}
+
       <main className="st-main">
         {/* ================= BERANDA ================= */}
         {tab === "home" && (
           <>
-          <div className="st-hero">
-            <img src={logoSitandan} width="1100" height="649" decoding="async"
-              alt="SITANDAN, Penjualan TBS Tercatat, Menghitung Pajaknya Mudah. Kantor Wilayah DJP Riau" />
-          </div>
           <div className="st-dua-kolom st-dua-kolom--home">
             <div className="st-kolom">
               <section className="st-nota" aria-label={`Ringkasan tahun ${tahun}`}>
@@ -485,9 +499,6 @@ export default function Sitandan() {
                 </section>
               )}
 
-              <button type="button" className="st-cta" onClick={() => { if (editId === null) setForm(formKosong()); pindahTab("catat"); }}>
-                <IconPlus /> Catat penjualan TBS
-              </button>
             </div>
 
             <div className="st-kolom">
@@ -1021,8 +1032,13 @@ const CSS = `
 .st-head__in{max-width:var(--lebar);margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
 .st-brand{display:flex;align-items:center;gap:10px;min-width:0}
 .st-logo{flex:none;display:block;border-radius:50%;filter:drop-shadow(0 2px 4px rgba(0,0,0,.25))}
-.st-hero{margin:-6px -8px 10px;text-align:center}
-.st-hero img{display:block;width:100%;max-width:520px;height:auto;margin:0 auto}
+/* Blok sambutan Beranda: menyatu dengan kepala hijau */
+.st-sambut{background:radial-gradient(90% 120% at 30% 0%,#2c6b3e 0%,var(--daun) 55%,#173d25 100%);color:#fff;padding:4px 16px 20px}
+.st-sambut__in{max-width:var(--lebar);margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:12px}
+.st-sambut__logo{display:block;width:100%;max-width:340px;height:auto;filter:drop-shadow(0 10px 18px rgba(0,0,0,.35))}
+.st-sambut__teks{width:100%;max-width:420px}
+.st-sambut__judul,.st-sambut__isi{display:none}
+.st-sambut .st-cta--sambut{margin:0;box-shadow:0 8px 18px -8px rgba(0,0,0,.55)}
 .st-brand__teks{min-width:0}
 .st-brand__nama{font-weight:800;font-size:22px;letter-spacing:.06em;line-height:1.05}
 .st-brand__sub{font-size:11.5px;color:#d3e7c9;line-height:1.3;margin-top:3px}
@@ -1213,10 +1229,14 @@ const CSS = `
 .st-dialog{background:#fff;border-radius:16px;padding:20px;width:100%;max-width:380px}
 
 /* HP kecil */
+@media (max-width:599px){
+  .st-brand__sub{display:none}
+  .st-brand__nama{font-size:21px}
+  .st-logo{width:40px;height:40px}
+}
 @media (max-width:440px){
-  .st-head__in{gap:8px;padding:10px 12px 10px 14px}
-  .st-logo{width:44px;height:44px}
-  .st-brand{gap:8px}
+  .st-head__in{gap:8px;padding:8px 12px 8px 14px}
+  .st-brand{gap:10px}
   .st-brand__sub{font-size:10.5px}
   .st-tahun{padding:8px 26px 8px 10px;background-position:right 8px center}
   .st-ikonbtn{width:42px}
@@ -1258,8 +1278,13 @@ const CSS = `
   .st-nav__titik{top:12px;left:auto;right:8px;border-color:var(--daun)}
 
   .st-main{padding:28px 24px 16px}
-  .st-hero{margin:-10px 0 18px}
-  .st-hero img{max-width:500px}
+  .st-sambut{padding:26px 24px 30px}
+  .st-sambut__in{flex-direction:row;align-items:center;justify-content:flex-start;gap:56px}
+  .st-sambut__logo{width:46%;max-width:470px;flex:none}
+  .st-sambut__teks{max-width:470px}
+  .st-sambut__judul{display:block;text-wrap:balance;font-size:34px;font-weight:800;line-height:1.15;letter-spacing:-.02em;margin:0 0 12px;color:#fff}
+  .st-sambut__isi{display:block;font-size:16.5px;line-height:1.6;color:#d3e7c9;margin:0 0 24px}
+  .st-sambut .st-cta--sambut{width:auto;display:inline-flex;padding:0 30px}
   .st-h1{font-size:26px}
   .st-dua-kolom{display:grid;gap:28px;align-items:start}
   .st-dua-kolom--home{grid-template-columns:minmax(0,5fr) minmax(0,7fr)}
